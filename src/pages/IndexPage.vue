@@ -196,7 +196,7 @@
             <div class="w-12 h-[1px] bg-teal-500"></div>
             <span class="uppercase tracking-[0.4em] text-[10px] text-teal-400 font-bold">The Serendiv Ethos</span>
           </div>
-          <h2 class="text-5xl md:text-7xl font-medium leading-[1.1] mb-12 text-white drop-shadow-2xl">
+          <h2 class="text-5xl md:text-7xl font-medium leading-[1.1] mb-12 text-white/90 drop-shadow-md relative z-10">
             Discover the <br/>
             <span class="italic text-teal-300 font-light">Pearl of the Indian Ocean.</span>
           </h2>
