@@ -179,7 +179,7 @@
 
       <div class="max-w-[1700px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-16 md:gap-24 items-center">
         <!-- Visual -->
-        <div class="lg:col-span-5 relative w-full aspect-[3/4] group gs-reveal">
+        <div class="lg:col-span-5 relative w-full aspect-square md:aspect-[3/4] group gs-reveal">
           <div class="absolute inset-0 bg-teal-900/40 translate-x-4 translate-y-4 -z-10 transition-transform duration-700 ease-out"></div>
           <img src="https://images.pexels.com/photos/3389817/pexels-photo-3389817.jpeg?auto=compress&cs=tinysrgb&w=1200" alt="Sri Lanka Heritage" class="w-full h-full object-cover filter brightness-90 contrast-125 transition-all duration-[2s]" />
           <!-- Floating badge -->
@@ -273,7 +273,7 @@
 
           <!-- SVG Map -->
           <!-- Mapbox Map Container -->
-          <div class="relative flex items-center justify-center w-full h-[450px] lg:h-[600px] rounded-3xl overflow-hidden border border-white/10 shadow-[0_0_60px_rgba(20,184,166,0.1)] group">
+          <div class="relative flex items-center justify-center w-full h-[350px] md:h-[450px] lg:h-[600px] rounded-3xl overflow-hidden border border-white/10 shadow-[0_0_60px_rgba(20,184,166,0.1)] group">
             <div id="mapbox-container" class="absolute inset-0 w-full h-full bg-black"></div>
             <!-- Ambient glow behind map -->
             <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-teal-900/10 via-transparent to-transparent pointer-events-none z-10"></div>
@@ -441,7 +441,7 @@
           </div>
 
           <!-- Right Image Gallery -->
-          <div class="order-1 lg:order-2 grid grid-cols-2 gap-4 h-[600px] gs-reveal relative">
+          <div class="order-1 lg:order-2 grid grid-cols-2 gap-4 h-[350px] sm:h-[450px] lg:h-[600px] gs-reveal relative">
             <div class="absolute inset-0 bg-teal-900/10 blur-[100px] -z-10 rounded-full"></div>
             <div class="flex flex-col gap-4 mt-12 overflow-hidden group">
               <img src="https://images.pexels.com/photos/1320686/pexels-photo-1320686.jpeg?auto=compress&cs=tinysrgb&w=800" class="w-full h-2/3 object-cover rounded-2xl shadow-2xl filter brightness-90 group-hover:brightness-110 group-hover:scale-105 transition-all duration-700 border border-white/10" alt="Resort" />
@@ -689,7 +689,7 @@
             <h2 class="text-6xl md:text-[5rem] font-serif font-medium mb-8 leading-tight drop-shadow-md text-white">{{ activeDestination.title }}</h2>
             
             <!-- Image for mobile -->
-            <img :src="activeDestination.img" class="w-full h-96 object-cover my-10 lg:hidden rounded-xl border border-white/10 shadow-lg" />
+            <img :src="activeDestination.img" class="w-full h-64 sm:h-80 md:h-96 object-cover my-10 lg:hidden rounded-xl border border-white/10 shadow-lg" />
 
             <!-- Long Description -->
             <div class="text-gray-300 font-light text-lg leading-relaxed space-y-6 mb-16 border-l-2 pl-6 border-teal-500/50 bg-white/5 p-6 rounded-r-xl shadow-inner">
