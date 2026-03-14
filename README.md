@@ -1,7 +1,9 @@
 # 🌴 Serendiv.
 ### The Absolute Sri Lankan Journey. Beyond the Map.
 
-![Serendiv Showcase](./public/screenshot.png)
+[![Live Demo](https://img.shields.io/badge/Live-Demo-%2314b8a6?style=for-the-badge&logo=vercel&logoColor=white)](https://serendiv.vercel.app/)
+
+![Serendiv Showcase](./public/screenshot_real.png)
 
 **Serendiv** is a high-fidelity, immersive luxury travel platform designed to showcase the profound beauty of Sri Lanka. Built with a focus on cinematic aesthetics, fluid motion, and premium user experience, it serves as a digital gateway to the island's most exclusive heritage, wildlife, and coastal retreats.
 
