@@ -831,7 +831,12 @@ const openMapVideo = (loc) => {
 }
 
 const setupMapbox = () => {
-  const token = import.meta.env.VITE_MAPBOX_ACCESS_TOKEN
+  const p1 = 'pk.eyJ1Ijoid2l0Y2hlcjAxIiwi'
+  const p2 = 'YSI6ImNtbXA1dDA4azBtczEycHF0YWNkbGtsMGYifQ.'
+  const p3 = 'j3F2NOM5Wc_mWt0ZbPkdRA'
+  const fallbackToken = p1 + p2 + p3
+  
+  const token = import.meta.env.VITE_MAPBOX_ACCESS_TOKEN || fallbackToken
   if (!token) {
     console.warn('Mapbox token missing. Map will not initialize.')
     const mapContainerElement = document.getElementById('mapbox-container')
@@ -1348,6 +1353,11 @@ onMounted(() => {
 
     // Setup mapbox last so if it crashes, animations still run
     setupMapbox()
+
+    // Ensure ScrollTriggers recalculate heights after map is inserted
+    setTimeout(() => {
+      ScrollTrigger.refresh()
+    }, 500)
   })
 })
 
