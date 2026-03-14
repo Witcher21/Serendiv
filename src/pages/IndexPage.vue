@@ -831,55 +831,82 @@ const openMapVideo = (loc) => {
 }
 
 const setupMapbox = () => {
-  mapboxgl.accessToken = import.meta.env.VITE_MAPBOX_ACCESS_TOKEN // Use env var provided in Vercel/local .env
-  mapInstance = new mapboxgl.Map({
-    container: 'mapbox-container',
-    style: 'mapbox://styles/mapbox/dark-v11', // Premium dark style
-    center: [80.7718, 7.5], // Center of Sri Lanka
-    zoom: 7.2, // Zoomed in heavily for full island perspective
-    pitch: 20,
-    scrollZoom: true // Re-enabled scroll zoom
-  })
-
-  // Add zoom and rotation controls
-  mapInstance.addControl(new mapboxgl.NavigationControl(), 'bottom-right')
-
-  mapInstance.on('load', () => {
-    // Add custom HTML markers
-    mapLocations.forEach((loc, index) => {
-      // Create element
-      const el = document.createElement('div')
-      el.className = 'custom-map-marker'
-      el.innerHTML = `
-        <div class="map-ping" style="animation-delay: ${index * 0.3}s"></div>
-        <div class="map-dot"></div>
-        <div class="map-label">${loc.name}</div>
-      `
-      
-      el.addEventListener('click', () => {
-        openMapVideo(loc)
-      })
-      el.addEventListener('mouseenter', () => {
-        el.classList.add('active-marker')
-      })
-      el.addEventListener('mouseleave', () => {
-        el.classList.remove('active-marker')
-      })
-
-      // Attach marker with exact center anchoring
-      new mapboxgl.Marker({ element: el, anchor: 'center' })
-        .setLngLat([loc.lng, loc.lat])
-        .addTo(mapInstance)
-    })
-    
-    // Fix Mapbox resizing bug
+  const token = import.meta.env.VITE_MAPBOX_ACCESS_TOKEN
+  if (!token) {
+    console.warn('Mapbox token missing. Map will not initialize.')
     const mapContainerElement = document.getElementById('mapbox-container')
     if (mapContainerElement) {
-      new ResizeObserver(() => {
-        mapInstance.resize()
-      }).observe(mapContainerElement)
+      mapContainerElement.innerHTML = `
+        <div class="absolute inset-0 flex items-center justify-center text-white/50 text-center p-6 bg-teal-900/10 border border-teal-500/20 rounded-3xl">
+          <div class="flex flex-col items-center gap-4">
+            <q-icon name="map" size="md" class="text-teal-500/50" />
+            <p class="text-sm">Interactive map offline.<br/><span class="text-[10px] uppercase tracking-widest mt-2 block">Developer: Add VITE_MAPBOX_ACCESS_TOKEN to .env</span></p>
+          </div>
+        </div>
+      `
     }
-  })
+    // Setup dummy click handlers for the locations if map is offline
+    mapLocations.forEach((loc, index) => {
+      if(index === 0) {
+        setTimeout(() => openMapVideo(loc), 1000)
+      }
+    })
+    return
+  }
+
+  try {
+    mapboxgl.accessToken = token
+    mapInstance = new mapboxgl.Map({
+      container: 'mapbox-container',
+      style: 'mapbox://styles/mapbox/dark-v11', // Premium dark style
+      center: [80.7718, 7.5], // Center of Sri Lanka
+      zoom: 7.2, // Zoomed in heavily for full island perspective
+      pitch: 20,
+      scrollZoom: true // Re-enabled scroll zoom
+    })
+
+    // Add zoom and rotation controls
+    mapInstance.addControl(new mapboxgl.NavigationControl(), 'bottom-right')
+
+    mapInstance.on('load', () => {
+      // Add custom HTML markers
+      mapLocations.forEach((loc, index) => {
+        // Create element
+        const el = document.createElement('div')
+        el.className = 'custom-map-marker'
+        el.innerHTML = `
+          <div class="map-ping" style="animation-delay: ${index * 0.3}s"></div>
+          <div class="map-dot"></div>
+          <div class="map-label">${loc.name}</div>
+        `
+        
+        el.addEventListener('click', () => {
+          openMapVideo(loc)
+        })
+        el.addEventListener('mouseenter', () => {
+          el.classList.add('active-marker')
+        })
+        el.addEventListener('mouseleave', () => {
+          el.classList.remove('active-marker')
+        })
+
+        // Attach marker with exact center anchoring
+        new mapboxgl.Marker({ element: el, anchor: 'center' })
+          .setLngLat([loc.lng, loc.lat])
+          .addTo(mapInstance)
+      })
+      
+      // Fix Mapbox resizing bug
+      const mapContainerElement = document.getElementById('mapbox-container')
+      if (mapContainerElement) {
+        new ResizeObserver(() => {
+          mapInstance.resize()
+        }).observe(mapContainerElement)
+      }
+    })
+  } catch (err) {
+    console.error('Mapbox initialization failed:', err)
+  }
 }
 
 const playMapVideo = () => {
@@ -1297,8 +1324,8 @@ onMounted(() => {
     gsap.ticker.lagSmoothing(0)
 
     initWebGlEngine()
-    setupMapbox()
 
+    // Register animations BEFORE setupMapbox in case Mapbox throws an error
     gsap.to('.hero-title .block', 
       { y: 0, duration: 1.5, ease: 'power4.out', stagger: 0.15, delay: 0.2 }
     )
@@ -1318,6 +1345,9 @@ onMounted(() => {
         }
       )
     })
+
+    // Setup mapbox last so if it crashes, animations still run
+    setupMapbox()
   })
 })
 
